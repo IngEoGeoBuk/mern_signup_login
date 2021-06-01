@@ -90,7 +90,7 @@ app.post('/sendEmail', (req, res) => {
         secure: false, // true for 465, false for other ports
         auth: {
         user: 'burning19@naver.com', // generated ethereal user
-        pass: 'asdsa', // generated ethereal password
+        pass: 'put your password', // generated ethereal password
         },
     });
     
@@ -154,7 +154,7 @@ app.post('/login', async (req, res) => {
 /// 로그인 부분 끝 ///
 
 
-/// 비밀번호 수정 및 회원탈퇴 ///
+/// 비밀번호 수정 및 회원탈퇴, 비번찾기(초기화) ///
 app.put('/updatePw', (req, res) => {
     const id = req.body.id;
     const password = req.body.newPassword;
@@ -181,7 +181,18 @@ app.delete("/deleteUser/:id", async (req, res) => {
     res.send("user deleted");
 })
 
-/// 비밀번호 수정 및 회원탈퇴 끝 ///
+app.get("/readUser/:email", async (req, res) => {
+    const email = req.params.email;
+    await UserModel.find({ "email" : email}, (err, result) => {
+        if(err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+/// 비밀번호 수정 및 회원탈퇴, 비번찾기(초기화) 끝 ///
 
 app.listen(5000, () => {
     console.log("yey, server is running on port 5000");

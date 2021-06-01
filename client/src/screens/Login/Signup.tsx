@@ -17,6 +17,8 @@ const Signup = () => {
     const [rePassword, setRePassword] = useState<string>('');
 
     /// 이메일 인증 부분 ///
+    const [isEmailSended, setIsEmailSended] = useState<boolean>(false);
+    const [isCompareValueCompleted, setIsCompareValueCompleted] = useState<boolean>(false)
     const [createNum, setCreateNum] = useState<string>('')
     const [verifyNum, setVerifyNum] = useState<string>('')
 
@@ -35,12 +37,20 @@ const Signup = () => {
                 email,
                 value: str
             }) 
+
+            setIsEmailSended(true);
+        }
+    }
+
+    const compareValue = () => {
+        if(createNum !== verifyNum) {
+            alert('인증번호를 다시 확인해주세요.');
+            return false;
+        } else {
+            setIsCompareValueCompleted(true);
         }
     }
     /// 이메일 인증 부분 끝 ///
-
-
-
     const history = useHistory();
 
     const register = () => {
@@ -56,8 +66,8 @@ const Signup = () => {
             });
         }
 
-        if(createNum !== verifyNum) {
-            alert('인증번호를 다시 확인해주세요.');
+        if(!isEmailSended || !isCompareValueCompleted) {
+            alert('이메일 인증 절차를 진행해주세요.');
             return false;
         }
 
@@ -105,7 +115,16 @@ const Signup = () => {
                 setVerifyNum(e.target.value);
                 }}
             />
-            <button onClick={() => sendvalue()}>이메일인증</button>
+            {!isEmailSended? 
+                <button onClick={() => sendvalue()}>이메일인증</button> :
+                <>
+                    {!isCompareValueCompleted ? 
+                        <button onClick={() => compareValue()}>인증확인</button> :
+                        <div>인증확인완료</div>
+                    }
+                </>
+            }
+            
             <br/><br/>
 
             <Typography variant="subtitle1">비밀번호</Typography>

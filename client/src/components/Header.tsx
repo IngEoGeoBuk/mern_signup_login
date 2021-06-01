@@ -23,7 +23,7 @@ const Header = () => {
                     <li><Link to='/' className="LinkStyles">Home</Link></li>
                     <li>
                         {email ? 
-                            <Link to='/create' className="LinkStyles">Write</Link> :
+                            <Link to='/createPost' className="LinkStyles">Write</Link> :
                             <div onClick={alertLogin} style={{ cursor: 'pointer' }}>Write</div>
                         }
                     </li>

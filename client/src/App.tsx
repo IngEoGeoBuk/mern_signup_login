@@ -5,9 +5,11 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
-import Home from './screens/Home/Home';
 import Login from './screens/Login/Login';
 import Signin from './screens/Login/Signup';
+import FindPw from './screens/Login/FindPw';
+
+import Home from './screens/Home/Home';
 
 import MyPage from './screens/Mypage/MyPage'
 import UpdatePw from './screens/Mypage/UpdatePw'
@@ -40,6 +42,7 @@ function App() {
               <Route path='/' exact component={Home} />
               <Route path='/login' exact component={Login} />
               <Route path='/signin' exact component={Signin} />
+              <Route path='/findPw' exact component={FindPw} />
               <Route path='/createPost' exact component={CreatePost} />
               <Route path='/mypage' exact component={MyPage} />
               <Route path='/mypage/updatePw' exact component={UpdatePw} />

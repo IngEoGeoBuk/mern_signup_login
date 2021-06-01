@@ -23,7 +23,7 @@ const UpdatePw = () => {
             alert('현재 비밀번호와 변경할 비밀번호는 달라야 합니다.');
             return false;
         }
-        if(!curPassword) {
+        if(!newPassword) {
             alert('변경할 비밀번호를 입력하세요.');
             return false;
         }
@@ -57,7 +57,6 @@ const UpdatePw = () => {
                 });
             }
         });
-
     }
 
 
