@@ -89,14 +89,14 @@ app.post('/sendEmail', (req, res) => {
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-        user: 'put your email', // generated ethereal user
-        pass: 'put your password', // generated ethereal password
+        user: 'burning19@naver.com', // generated ethereal user
+        pass: 'asdsa', // generated ethereal password
         },
     });
     
     // send mail with defined transport object
     let info = await transporter.sendMail({
-        from: '"Nodemailer contact" <put your email>', // sender address
+        from: '"Nodemailer contact" <burning19@naver.com>', // sender address
         to: `${email}`, // list of receivers
         subject: '회원가입 인증 번호입니다.', // Subject line
         text: "회원가입 인증번호를 입력해주세요", // plain text body
@@ -155,18 +155,15 @@ app.post('/login', async (req, res) => {
 
 
 /// 비밀번호 수정 및 회원탈퇴 ///
-app.post('/updatePw', (req, res) => {
-    const id = req.body.mongoId;
+app.put('/updatePw', (req, res) => {
+    const id = req.body.id;
     const password = req.body.newPassword;
-
-    console.log(password);
 
     bcrypt.hash(password, saltRounds, (err, hash) => {
         if(err) {
             console.log(err);
         }
         try {
-            console.log(hash)
             UserModel.findById(id, (error, updatePw) => {
                 updatePw.password = hash;
                 updatePw.save();

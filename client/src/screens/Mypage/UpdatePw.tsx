@@ -11,7 +11,6 @@ const UpdatePw = () => {
     const [curPassword, setCurPassword] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
     const [rePassword, setRePassword] = useState<string>('');
-    const [mongoId, setMongoId] = useState<string>('');
 
     const email = window.localStorage.getItem("email")?.substr(1).slice(0,-1);
 
@@ -19,18 +18,7 @@ const UpdatePw = () => {
         if(!curPassword) {
             alert('현재 비밀번호를 입력해주세요.');
             return false;
-        } else {
-            Axios.post('http://localhost:5000/login', {
-                email, password: curPassword
-            }).then(res => {
-                if(res.data.auth === false) {
-                    alert('현재 비밀번호가 옳지 않습니다.');
-                    return false;
-                } else {
-                    setMongoId(res.data.result[0]._id);
-                } 
-            });
-        }
+        } 
         if(curPassword === newPassword) {
             alert('현재 비밀번호와 변경할 비밀번호는 달라야 합니다.');
             return false;
@@ -48,17 +36,28 @@ const UpdatePw = () => {
             return false;
         }
 
-        Axios.post(`http://localhost:5000/updatePw`, {
-            mongoId, newPassword
+        Axios.post('http://localhost:5000/login', {
+            email, password: curPassword
         }).then(res => {
-            if(res.status === 200) {
-                alert('비밀번호 변경에 성공하였습니다. 재로그인 해주세요.');
-                window.localStorage.clear();
-                window.location.href = "/";
+            if (res.data.auth === false) {
+                alert('현재 비밀번호가 옳지 않습니다.');
+                return false;
             } else {
-                console.log('비밀번호 변경 실패');
+                const id = res.data.result[0]._id;
+                Axios.put(`http://localhost:5000/updatePw`, {
+                    id, newPassword
+                }).then(res => {
+                    if (res.status === 200) {
+                        alert('비밀번호 변경에 성공하였습니다. 재로그인 해주세요.');
+                        window.localStorage.clear();
+                        window.location.href = "/";
+                    } else {
+                        console.log('비밀번호 변경 실패');
+                    }
+                });
             }
         });
+
     }
 
 
