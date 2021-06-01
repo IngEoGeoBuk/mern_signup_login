@@ -1,0 +1,22 @@
+.pagination {
+    text-align: center;
+    justify-content: center;
+}
+
+ul {
+    display: flex;
+    list-style: none;
+}
+
+li {
+    list-style: none;
+    padding: 10px;
+    color: #326295;
+    cursor: pointer;
+}
+
+.paginationActive a {
+    color: white;
+    background-color: #326295;
+    padding: 5px;
+}

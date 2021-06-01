@@ -114,12 +114,7 @@ app.post('/sendEmail', (req, res) => {
     main().catch(console.error);
 })
 
-
-
 /// 회원가입 부분 끝 ///
-
-
-
 
 
 /// 로그인 부분 ///
@@ -193,6 +188,41 @@ app.get("/readUser/:email", async (req, res) => {
 })
 
 /// 비밀번호 수정 및 회원탈퇴, 비번찾기(초기화) 끝 ///
+
+
+/// 게시글 부분 ///
+const PostModel = require('./models/Post');
+
+////// 게시물부분 //////
+app.post('/createPost', async (req, res) => {
+    const email = req.body.email;
+    const title = req.body.title;
+    const contents = req.body.contents;
+    const time = req.body.time;
+
+    const post = new PostModel({
+        email, title, contents, time
+    });
+    
+    await post.save()
+    res.send(post);
+})
+
+app.get('/readPost', async (req, res) => {
+    await PostModel.find({}, { _id: 1, title: 1 }, (err, result) => {
+        if(err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+
+/// 게시글 부분 끝 /// 
+
+
+
 
 app.listen(5000, () => {
     console.log("yey, server is running on port 5000");
