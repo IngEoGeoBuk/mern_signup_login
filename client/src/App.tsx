@@ -16,6 +16,7 @@ import UpdatePw from './screens/Mypage/UpdatePw'
 import DeleteUser from './screens/Mypage/DeleteUser';
 
 import CreatePost from './screens/Post/CreatePost';
+import DetailPost from './screens/Post/DetailPost';
 
 // import UserInfoContext from './context/UserInfoContext';
 // https://smujihoon.tistory.com/214
@@ -44,6 +45,7 @@ function App() {
               <Route path='/signin' exact component={Signin} />
               <Route path='/findPw' exact component={FindPw} />
               <Route path='/createPost' exact component={CreatePost} />
+              <Route path='/detail/:id' exact component={DetailPost} />
               <Route path='/mypage' exact component={MyPage} />
               <Route path='/mypage/updatePw' exact component={UpdatePw} />
               <Route path='/mypage/deleteUser' exact component={DeleteUser} />

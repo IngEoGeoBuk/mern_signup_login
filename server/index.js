@@ -90,7 +90,7 @@ app.post('/sendEmail', (req, res) => {
         secure: false, // true for 465, false for other ports
         auth: {
         user: 'burning19@naver.com', // generated ethereal user
-        pass: 'put your password', // generated ethereal password
+        pass: 'puy your password', // generated ethereal password
         },
     });
     
@@ -211,6 +211,17 @@ app.post('/createPost', async (req, res) => {
 app.get('/readPost', async (req, res) => {
     await PostModel.find({}, { _id: 1, title: 1 }, (err, result) => {
         if(err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/readOne/:id', async (req, res) => {
+    const id = req.params.id;
+    await PostModel.find({ "_id": id }, (err, result) => {
+        if (err) {
             res.send(err);
         } else {
             res.send(result);

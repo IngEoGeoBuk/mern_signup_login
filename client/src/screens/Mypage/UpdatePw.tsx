@@ -62,7 +62,7 @@ const UpdatePw = () => {
 
 
     return (
-        <Paper className="container" style={{ textAlign: 'center', padding: '20px' }}>
+        <Paper style={{ textAlign: 'center', padding: '20px' }}>
             <Typography variant="h5">비밀번호 변경</Typography>
             <br/>
             <Typography variant="subtitle1">현재 비밀번호</Typography>
