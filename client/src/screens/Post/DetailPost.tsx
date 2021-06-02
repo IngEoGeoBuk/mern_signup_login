@@ -12,6 +12,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
 
+import Like_DisLike from '../../components/Like_Dislike'
+
 /// 게시판 부분
 interface postTypes {
     _id: string;
@@ -155,6 +157,7 @@ const DetailPost = ({ match }: any) => {
                         <Typography>글 내용: </Typography>
                         <div>{val.contents}</div>
                         <br />
+                        <Like_DisLike email={email!} poId={val._id!} />
                         <Typography>작성시간: {val.time}</Typography>
                         <Typography>수정시간: {val.updated_time}</Typography>
                     </Paper>

@@ -10,6 +10,7 @@ import Signin from './screens/Login/Signup';
 import FindPw from './screens/Login/FindPw';
 
 import Home from './screens/Home/Home';
+import Best from './screens/Home/Best';
 
 import MyPage from './screens/Mypage/MyPage'
 import UpdatePw from './screens/Mypage/UpdatePw'
@@ -41,6 +42,7 @@ function App() {
             <br/>
             <Switch>
               <Route path='/' exact component={Home} />
+              <Route path='/readBest' exact component={Best} />
               <Route path='/login' exact component={Login} />
               <Route path='/signin' exact component={Signin} />
               <Route path='/findPw' exact component={FindPw} />

@@ -27,6 +27,7 @@ const Header = () => {
                             <div onClick={alertLogin} style={{ cursor: 'pointer' }}>Write</div>
                         }
                     </li>
+                    <li><Link to='/readBest' className="LinkStyles">Best</Link></li>
                     <li>
                         {email ? 
                             <div onClick={logout} style={{ cursor: 'pointer' }}>Logout</div> :

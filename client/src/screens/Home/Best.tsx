@@ -17,30 +17,23 @@ interface postTypes {
     contents: string;
 }
 
-const Home = () => {
+const Best = () => {
     const [postList, setPostList] = useState<postTypes[]>([]);
-    const [bestPostList, setBestPostList] = useState<postTypes[]>([]);
-    const curLink = document.location.href.split('/');
-    const lastUrl = curLink.pop();
 
     useEffect(() => {
-        // 게시글 불러오기
-        Axios.get('http://localhost:5000/readPost')
-        .then((res) => setPostList(res.data.reverse()));
-
         // // 개념글 
-        // Axios.get('http://localhost:5000/readBest')
-        // .then((res) => res.data.forEach((poId: any) => {
-        //     const id = poId.poId;
-        //     Axios.get(`http://localhost:5000/readOne/${id}`)
-        //     .then((res2 : any) => {
-        //         setPostList((postList : any ) => [
-        //             ...postList,
-        //             { _id: res2.data[0]._id, title: res2.data[0].title, content: res2.data[0].content }
-        //         ])
-        //     })
-        // }))
-    }, [])    
+        Axios.get('http://localhost:5000/readBest')
+        .then((res) => res.data.forEach((poId: any) => {
+            const id = poId.poId;
+            Axios.get(`http://localhost:5000/readOne/${id}`)
+            .then((res2 : any) => {
+                setPostList((postList : any ) => [
+                    ...postList,
+                    { _id: res2.data[0]._id, title: res2.data[0].title, content: res2.data[0].content }
+                ].reverse())
+            })
+        }))
+    }, [])
 
     const [pageNumber, setPageNumber] = useState(0);
     const postPerPage = 5;
@@ -103,4 +96,4 @@ const Home = () => {
     );
 }
 
-export default Home
+export default Best

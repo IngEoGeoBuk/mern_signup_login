@@ -90,7 +90,7 @@ app.post('/sendEmail', (req, res) => {
         secure: false, // true for 465, false for other ports
         auth: {
         user: 'burning19@naver.com', // generated ethereal user
-        pass: 'puy your password', // generated ethereal password
+        pass: 'put your password', // generated ethereal password
         },
     });
     
@@ -301,12 +301,119 @@ app.delete("/deleteComment/:id", async (req, res) => {
     await CommentModel.findByIdAndRemove(id).exec()
     res.send("item deleted.");   
 });
-
-
 /// 댓글 부분 끝 ///
 
 
+/// 좋아요 && 싫어요 부분 ///
+const LikeModel = require('./models/Like');
+const DislikeModel = require('./models/Dislike');
 
+app.post('/upLike', async (req, res) => {
+    const poId = req.body.poId;
+    const email = req.body.email;
+    const uplike = new LikeModel({
+        poId, email
+    });
+    await uplike.save()
+    res.send(uplike);
+});
+
+app.post('/unLike', async (req, res) => {
+    const id = req.body.yourLiked;
+    await LikeModel.findOneAndDelete(id).exec()
+    res.send("liked deleted.");    
+});
+
+app.get('/readYourLike/:poId/:email', async (req, res) => {
+    const email = req.params.email;
+    const poId = req.params.poId;
+    let variable = { email, poId }
+    await LikeModel.find(variable, (err, result) => {
+        if(err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.post('/upDislike', async (req, res) => {
+    const poId = req.body.poId;
+    const email = req.body.email;
+    const updislike = new DislikeModel({
+        poId, email
+    });
+    await updislike.save()
+    res.send(updislike);
+});
+
+app.post('/unDislike', async (req, res) => {
+    const id = req.body.yourDisliked;
+    await DislikeModel.findOneAndDelete(id).exec()
+    res.send("disliked deleted.");    
+});
+
+app.get('/readYourDislike/:poId/:email', async (req, res) => {
+    const email = req.params.email;
+    const poId = req.params.poId;
+    let variable = { email, poId }
+    await DislikeModel.find(variable, (err, result) => {
+        if(err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/ReadLike/:poId', async (req, res) => {
+    const poId = req.params.poId;
+    await LikeModel.find({ poId }, (err, result) => {
+        if(err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/ReadDislike/:poId', async (req, res) => {
+    const poId = req.params.poId;
+    await DislikeModel.find({ poId }, (err, result) => {
+        if(err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+/// 좋아요 && 싫어요 부분 끝 ///
+
+
+/// 개념글 부분 ///
+app.get('/readBest', async (req, res) => {
+    // 념글컷 조정하고 싶으면 $gt: 3 <--- 이거 건드리자
+    await LikeModel.aggregate([{ $group: {
+        _id: { poId: "$poId" },
+        count: { $sum: 1 }}},
+        { $match: {
+            count: { $gt: 2 }}},
+        { $project: {
+            _id: 0,
+            poId: "$_id.poId",
+            count: 1 }
+        }
+    ], (err, result) => {
+        if(err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+/// 개념글 부분 끝 ///
 
 app.listen(5000, () => {
     console.log("yey, server is running on port 5000");
