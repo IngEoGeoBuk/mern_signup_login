@@ -37,7 +37,7 @@ interface commentTypes {
 
 const DetailPost = ({ match }: any) => {    
     /// 게시판 부분 ///
-    const getEmail = window.localStorage.getItem("email")?.substr(1).slice(0, -1);
+    const email = window.localStorage.getItem("email")?.substr(1).slice(0, -1);
     const time = moment().format('YYYY-MM-DD:HH:mm:ss');
 
     
@@ -49,7 +49,9 @@ const DetailPost = ({ match }: any) => {
 
     useEffect(() => {
         Axios.get(`http://localhost:5000/readOne/${id}`)
-            .then((res) => setPostList(res.data));
+        .then((res) => setPostList(res.data));
+        Axios.get(`http://localhost:5000/readComment/${id}`)
+        .then((res) => setCommentList(res.data));
     }, [])
 
     const deletePost = (id: string) => {
@@ -65,6 +67,10 @@ const DetailPost = ({ match }: any) => {
 
 
     /// 댓글 부분 ///
+    const IconStyles = {
+        cursor: 'pointer', display: 'flex'
+    }
+
     const [comments, setComments] = useState<string>('');
     const [commentList, setCommentList] = useState<commentTypes[]>([]);
     const createComment = () => {
@@ -73,7 +79,7 @@ const DetailPost = ({ match }: any) => {
             return false;
         }
         Axios.post('http://localhost:5000/createComment', {
-            poId: getId, email: getEmail, context: comments, time
+            poId: getId, email, context: comments, time
         }).then((res: any) => {
             setCommentList([
                 ...commentList, res.data
@@ -82,6 +88,38 @@ const DetailPost = ({ match }: any) => {
         setComments('');
     }
 
+
+    const deleteComment = (id: string) => {
+        if (window.confirm('댓글을 삭제하시겠습니까?')) {
+            Axios.delete(`http://localhost:5000/deleteComment/${id}`)
+            .then((res) => {
+                setCommentList(
+                    commentList.filter((val) => {
+                        return val._id != id;
+                    })
+                );
+            });
+        } 
+    }
+
+    /// 댓글 수정 부분 
+    const [targetComment, setTargetComment] = useState<string>();
+    const [showUpdateComment, setShowUpdateComment] = useState<boolean>(false);
+    const [newContext, setNewContext] = useState<string>('');
+
+    const updateTargetCommentId = `${targetComment}`;
+    const updateComment = (id : string) => {
+        Axios.put(`http://localhost:5000/updateComment/${updateTargetCommentId}`, { newContext, time })
+        .then(() => {
+            setCommentList(commentList.map((val : any) => {
+                return val._id === id ? 
+                { _id: id, email: val.email, context: newContext, time: val.time, updated_time: time } 
+                : val;
+            }));
+            setTargetComment('');
+            setShowUpdateComment(!showUpdateComment);
+        })
+    }
     /// 댓글 부분 끝 ///
 
     return (
@@ -92,7 +130,7 @@ const DetailPost = ({ match }: any) => {
                         <h3 style={{ display: 'none' }}>{key}</h3>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography>제목: {val.title}</Typography>
-                            {getEmail === val.email ? 
+                            {email === val.email ? 
                                 <div style={{ display: 'flex' }}>
                                     <Link to={`/updatePost/${val._id}`}
                                         style={{ display: 'flex', cursor: 'pointer', textDecoration: 'none', color: 'black' }}
@@ -124,7 +162,7 @@ const DetailPost = ({ match }: any) => {
             })}
             <br/>
             <div>
-                {getEmail ?
+                {email ?
                     <div>
                         <div style={{ paddingBottom: '10px' }}>
                             <OutlinedInput
@@ -153,9 +191,67 @@ const DetailPost = ({ match }: any) => {
                             <Paper style={{ padding: '10px' }} elevation={2}>
                                 <h3 style={{ display: 'none' }}>{key}</h3>
                                 <div>
-                                    <Typography>작성자: {val.email}</Typography>
+                                    <div style = {{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <Typography>작성자: {val.email}</Typography>
+                                        {email === val.email ? 
+                                        <div style={{ display: 'flex' }}>
+                                                <div
+                                                    onClick={() => {
+                                                        setTargetComment(val._id);
+                                                        setShowUpdateComment(!showUpdateComment);
+                                                    }}
+                                                    style={IconStyles}
+                                                >
+                                                    <CheckIcon />
+                                                    <Typography>수정</Typography>
+                                                </div>
+                                                &emsp;
+                                                <div 
+                                                    style={IconStyles}
+                                                    onClick={() => { deleteComment(val._id) }}
+                                                >
+                                                    <DeleteIcon />
+                                                    <Typography>삭제</Typography>
+                                                </div>
+                                            </div> : <div></div>
+                                        }    
+                                    </div>
                                     <Typography>내용: </Typography>
                                     <Typography>{val.context}</Typography>
+                                    {val._id === targetComment && showUpdateComment ?
+                                        <div>
+                                            <div>
+                                                <OutlinedInput
+                                                    type="text"
+                                                    style={{ width: '75%' }}
+                                                    onChange={(e) => {
+                                                        setNewContext(e.target.value);
+                                                    }}
+                                                />
+                                            </div>
+                                            <div style={{ display: 'flex', padding: '10px' }}>
+                                                <div
+                                                    onClick={() => { updateComment(val._id!) }}
+                                                    style={IconStyles}
+                                                >
+                                                    <CheckIcon />
+                                                    <Typography>수정하기</Typography>
+                                                </div>
+                                                <div
+                                                    onClick={() => {
+                                                        setTargetComment('');
+                                                        setShowUpdateComment(!showUpdateComment);
+                                                    }}
+                                                    style={IconStyles}
+                                                >
+                                                    <CloseIcon />
+                                                    <Typography>취소</Typography>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        : <div></div>
+                                    }
                                     <Typography>작성시간 {val.time}</Typography>
                                 </div>
                             </Paper>
