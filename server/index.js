@@ -251,9 +251,25 @@ app.delete("/deletePost/:id", async (req, res) => {
     await PostModel.findByIdAndRemove(id).exec()
     res.send("item deleted.");
 });
-
-
 /// 게시글 부분 끝 /// 
+
+
+/// 댓글 부분 ///
+const CommentModel = require('./models/Comment');
+
+app.post('/createComment', async (req, res) => {
+    const poId = req.body.poId;
+    const email = req.body.email;
+    const context = req.body.context;
+    const time = req.body.time;
+    const comment = new CommentModel({
+        poId, email, context, time
+    });
+    await comment.save()
+    res.send(comment);
+});
+
+/// 댓글 부분 끝 ///
 
 
 

@@ -23,8 +23,24 @@ interface postTypes {
     __v? : Number;
 }
 
+/// 댓글 부분
+interface commentTypes {
+    _id: string;
+    poId: string;
+    email: string;
+    context: string;
+    time: string;
+    updated_time?: Date;
+    __v?: Number;
+}
+
+
 const DetailPost = ({ match }: any) => {    
+    /// 게시판 부분 ///
     const getEmail = window.localStorage.getItem("email")?.substr(1).slice(0, -1);
+    const time = moment().format('YYYY-MM-DD:HH:mm:ss');
+
+    
     const getId = match.params.id;
     const id = `${getId}`;
     const history = useHistory();
@@ -45,12 +61,35 @@ const DetailPost = ({ match }: any) => {
             });
         }
     }
+    /// 게시판 부분 끝 ///
+
+
+    /// 댓글 부분 ///
+    const [comments, setComments] = useState<string>('');
+    const [commentList, setCommentList] = useState<commentTypes[]>([]);
+    const createComment = () => {
+        if (!comments) {
+            alert("댓글 내용을 입력해주세요.");
+            return false;
+        }
+        Axios.post('http://localhost:5000/createComment', {
+            poId: getId, email: getEmail, context: comments, time
+        }).then((res: any) => {
+            setCommentList([
+                ...commentList, res.data
+            ])
+        })
+        setComments('');
+    }
+
+    /// 댓글 부분 끝 ///
 
     return (
-        <Paper style={{ padding: '20px' }}>
+        <>
             {postList.map(( val: postTypes, key: number ) => {
                 return (
-                    <>
+                    <Paper style={{ padding: '20px' }}>
+                        <h3 style={{ display: 'none' }}>{key}</h3>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography>제목: {val.title}</Typography>
                             {getEmail === val.email ? 
@@ -80,10 +119,53 @@ const DetailPost = ({ match }: any) => {
                         <br />
                         <Typography>작성시간: {val.time}</Typography>
                         <Typography>수정시간: {val.updated_time}</Typography>
-                    </>
+                    </Paper>
                 )
             })}
-        </Paper>
+            <br/>
+            <div>
+                {getEmail ?
+                    <div>
+                        <div style={{ paddingBottom: '10px' }}>
+                            <OutlinedInput
+                                style={{ width: '75%' }}
+                                type="text"
+                                onChange={(e) => {
+                                    setComments(e.target.value);
+                                }}
+                                value={comments}
+                            />
+                        </div>
+                        <Button 
+                            variant="contained"
+                            onClick={createComment}
+                        >
+                            댓글달기
+                        </Button>
+                        <br /><br />
+                    </div>
+                    : <div></div>
+                }
+
+                {commentList.map((val: commentTypes, key: number) => {
+                    return (
+                        <>
+                            <Paper style={{ padding: '10px' }} elevation={2}>
+                                <h3 style={{ display: 'none' }}>{key}</h3>
+                                <div>
+                                    <Typography>작성자: {val.email}</Typography>
+                                    <Typography>내용: </Typography>
+                                    <Typography>{val.context}</Typography>
+                                    <Typography>작성시간 {val.time}</Typography>
+                                </div>
+                            </Paper>
+                            <br/>
+                        </>
+                    )
+                })}
+            </div>
+
+        </>
     )
 }
 

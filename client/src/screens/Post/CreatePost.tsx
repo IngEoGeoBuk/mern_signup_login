@@ -86,7 +86,7 @@ const CreatePost = ({ match }: any) => {
                   setTitle(e.target.value);
                   }}
                   maxLength={20}
-                  style={{ width: '600px' }}
+                  style={{ width: '75%' }}
                   value={title}
               />
             <Typography>내용</Typography>
@@ -96,7 +96,7 @@ const CreatePost = ({ match }: any) => {
                     setContents(e.target.value);
                   }}
                   value={contents}
-                  style={{ width: '600px' }}
+                  style={{ width: '75%' }}
             />
             <br/><br/>
             {getId ? 
