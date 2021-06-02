@@ -46,6 +46,7 @@ function App() {
               <Route path='/findPw' exact component={FindPw} />
               <Route path='/createPost' exact component={CreatePost} />
               <Route path='/detail/:id' exact component={DetailPost} />
+              <Route path='/updatePost/:id' exact component={CreatePost} />
               <Route path='/mypage' exact component={MyPage} />
               <Route path='/mypage/updatePw' exact component={UpdatePw} />
               <Route path='/mypage/deleteUser' exact component={DeleteUser} />

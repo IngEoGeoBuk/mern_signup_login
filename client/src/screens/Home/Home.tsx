@@ -18,7 +18,7 @@ const Home = () => {
     useEffect(() => {
         // 게시글 불러오기
         Axios.get('http://localhost:5000/readPost')
-        .then((res) => setPostList(res.data));
+        .then((res) => setPostList(res.data.reverse()));
     }, [])
 
     const [pageNumber, setPageNumber] = useState(0);

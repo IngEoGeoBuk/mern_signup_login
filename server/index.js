@@ -193,7 +193,6 @@ app.get("/readUser/:email", async (req, res) => {
 /// 게시글 부분 ///
 const PostModel = require('./models/Post');
 
-////// 게시물부분 //////
 app.post('/createPost', async (req, res) => {
     const email = req.body.email;
     const title = req.body.title;
@@ -228,6 +227,30 @@ app.get('/readOne/:id', async (req, res) => {
         }
     })
 })
+
+app.put("/updatePost/:id", async (req, res) => {
+    const id = req.params.id;
+    const title = req.body.title;
+    const contents = req.body.contents;
+    const updated_time = req.body.time;
+
+    try {
+        await PostModel.findById(id, (err, updatePost) => {
+            updatePost.title = String(title);
+            updatePost.contents = String(contents);
+            updatePost.updated_time = String(updated_time);
+            updatePost.save();
+        })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.delete("/deletePost/:id", async (req, res) => {
+    const id = req.params.id
+    await PostModel.findByIdAndRemove(id).exec()
+    res.send("item deleted.");
+});
 
 
 /// 게시글 부분 끝 /// 
