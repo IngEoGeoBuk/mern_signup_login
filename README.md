@@ -1,4 +1,4 @@
-Simple Login + Logout Portfolio.
+Simple Login + Logout + Post CRUD + Comments CRUD(~ing) + Like&Dislike(~ing) Portfolio.
 
 U can also update password or delete Users.
 
