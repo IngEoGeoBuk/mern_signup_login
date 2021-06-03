@@ -46,4 +46,19 @@ router.delete("/deleteComment/:id", async (req, res) => {
     res.send("item deleted.");
 });
 
+router.post('/createRepply', async (req, res) => {
+    const poId = req.body.poId;
+    const coId = req.body.coId;
+    const email = req.body.email;
+    const context = req.body.context;
+    const time = req.body.time;
+    const comment = new CommentModel({
+        poId, coId, email, context, time
+    });
+    await comment.save()
+    res.send(comment);
+});
+
+
+
 module.exports = router;

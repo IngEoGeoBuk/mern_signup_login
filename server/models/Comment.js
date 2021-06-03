@@ -5,6 +5,10 @@ const CommentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    coId: {
+        type: String,
+        required: false
+    },
     email: {
         type: String,
         required: true

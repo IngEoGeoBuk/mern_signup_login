@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link, useHistory } from 'react-
 import moment from 'moment';
 import 'moment/locale/ko';
 import { Paper, OutlinedInput, Button, Typography } from '@material-ui/core';
-import { Delete, Edit, Close, Check } from '@material-ui/icons';
+import { Delete, Edit, Close, Check, Reply } from '@material-ui/icons';
 import Like_DisLike from '../../components/Like_Dislike'
 
 /// 게시판 부분
@@ -22,6 +22,7 @@ interface postTypes {
 interface commentTypes {
     _id: string;
     poId: string;
+    coId?: string;
     email: string;
     context: string;
     time: string;
@@ -117,6 +118,28 @@ const DetailPost = ({ match }: any) => {
     }
     /// 댓글 부분 끝 ///
 
+    /// 답글 부분 ///
+    const [showReplyBox, setShowReplyBox] = useState<string>('');
+    const [repply, setRepply] = useState<string>('');
+    const createRepply = (poId: string, coId : string) => {
+        if (!repply) {
+            alert("댓글 내용을 입력해주세요.");
+            return false;
+        }
+        Axios.post('http://localhost:5000/comment/createRepply', {
+            poId, coId, email, context: repply, time
+        }).then((res: any) => {
+            console.log(res)
+            // setCommentList([
+            //     ...commentList, res.data
+            // ])
+        })
+        setShowReplyBox('')
+        setRepply('');
+    }
+    /// 답글 부분 끝 ///
+
+
     return (
         <>
             {postList.map(( val: postTypes, key: number ) => {
@@ -198,7 +221,7 @@ const DetailPost = ({ match }: any) => {
                                                     }}
                                                     style={IconStyles}
                                                 >
-                                                    <Check />
+                                                    <Edit />
                                                     <Typography>수정</Typography>
                                                 </div>
                                                 &emsp;
@@ -249,9 +272,44 @@ const DetailPost = ({ match }: any) => {
                                         : <div></div>
                                     }
                                     <Typography>작성시간 {val.time}</Typography>
+                                    <Typography>수정시간: {val.updated_time}</Typography>
+                                    <br/>
+                                    {email ? <>
+                                        { showReplyBox === val._id ? 
+                                            <div style={IconStyles} onClick={() => { setShowReplyBox('') }}>
+                                                <div style={IconStyles}><Close /><Typography>답글취소</Typography></div>
+                                            </div>
+                                            : 
+                                            <div style={IconStyles} onClick={() => { setShowReplyBox(val._id) }}>
+                                                <div style={IconStyles}><Reply /><Typography>답글달기</Typography></div>
+                                            </div>
+                                        }
+                                    </>: <div></div>
+                                    }
                                 </div>
                             </Paper>
                             <br/>
+                            {showReplyBox === val._id ?
+                                <div>
+                                    <div style={{ paddingBottom: '10px' }}>
+                                        <OutlinedInput
+                                            style={{ width: '75%' }}
+                                            type="text"
+                                            onChange={(e) => {
+                                                setRepply(e.target.value);
+                                            }}
+                                            value={repply}
+                                        />
+                                    </div>
+                                    <Button
+                                        variant="contained"
+                                        onClick={() => { createRepply(val.poId, val._id)}}
+                                    >
+                                        답글달기
+                                    </Button>
+                                </div>
+                                : <div></div>
+                            }
                         </>
                     )
                 })}
