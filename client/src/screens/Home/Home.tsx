@@ -23,7 +23,7 @@ const Home = () => {
 
     useEffect(() => {
         // 게시글 불러오기
-        Axios.get('http://localhost:5000/readPost')
+        Axios.get('http://localhost:5000/post/readPost')
         .then((res) => setPostList(res.data.reverse()));
     }, [])    
 

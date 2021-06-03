@@ -25,7 +25,7 @@ const CreatePost = ({ match }: any) => {
             return false;
         }
 
-        Axios.post('http://localhost:5000/createPost', {
+        Axios.post('http://localhost:5000/post/createPost', {
             email, title, contents, time
         })
         .then((res) => {
@@ -41,7 +41,7 @@ const CreatePost = ({ match }: any) => {
     const id = `${getId}`;
     useEffect(() => {
         if (getId) {
-            Axios.get(`http://localhost:5000/readOne/${id}`)
+            Axios.get(`http://localhost:5000/post/readOne/${id}`)
             .then((res) => {
                 setTitle(res.data[0].title)
                 setContents(res.data[0].contents)
@@ -61,7 +61,7 @@ const CreatePost = ({ match }: any) => {
             return false;
         }
 
-        Axios.put(`http://localhost:5000/updatePost/${id}`, {
+        Axios.put(`http://localhost:5000/post/updatePost/${id}`, {
             title, contents, time
         })
         window.location.replace("/");

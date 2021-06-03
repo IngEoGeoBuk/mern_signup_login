@@ -17,25 +17,25 @@ const Like_Dislike: React.FC<getProps> = ({ poId, email }) => {
 
     useEffect(() => {
         // 너가 좋아요를 눌렀는지 안 눌렀는지 
-        Axios.get(`http://localhost:5000/readYourLike/${poId}/${email}`)
+        Axios.get(`http://localhost:5000/likeDislike/readYourLike/${poId}/${email}`)
         .then((res) => (
             setYourLiked(res.data[0]._id)
         ))
         .catch((error : any ) => console.log('당신은 이 영상에 좋아요를 누르지 않았습니다.'))
-        Axios.get(`http://localhost:5000/readYourDislike/${poId}/${email}`)
+        Axios.get(`http://localhost:5000/likeDislike/readYourDislike/${poId}/${email}`)
         .then((res) => (
             setYourDisliked(res.data[0]._id)
         ))
         .catch((error : any ) => console.log('당신은 이 영상에 싫어요를 누르지 않았습니다.'))
 
         // 전체 좋아요 & 싫어요 갯수
-        Axios.get(`http://localhost:5000/readDislike/${poId}`)
+        Axios.get(`http://localhost:5000/likeDislike/ReadDislike/${poId}`)
         .then((res) => (
             setReadDislike(res.data.length)
         ))
         .catch((error : any ) => console.log('이 영상엔 좋아요 또는 싫어요가 없습니다.'))
 
-        Axios.get(`http://localhost:5000/ReadLike/${poId}`)
+        Axios.get(`http://localhost:5000/likeDislike/ReadLike/${poId}`)
         .then((res) => (
             setReadLike(res.data.length)
         ))
@@ -49,13 +49,13 @@ const Like_Dislike: React.FC<getProps> = ({ poId, email }) => {
             return false;
         } else {
             if(yourDisliked) {
-                Axios.post('http://localhost:5000/unDislike', {
+                Axios.post('http://localhost:5000/likeDislike/unDislike', {
                     yourDisliked
                 })
                 setYourDisliked('');
                 setReadDislike(readDislike-1);     
             }
-            Axios.post('http://localhost:5000/upLike', {
+            Axios.post('http://localhost:5000/likeDislike/upLike', {
                 poId, email
             }).then((res) => setYourLiked(res.data._id));
             setReadLike(readLike+1)
@@ -67,7 +67,7 @@ const Like_Dislike: React.FC<getProps> = ({ poId, email }) => {
             alert('로그인을 하셔야 가능합니다.');
             return false;
         } else {
-            Axios.post('http://localhost:5000/unLike', {
+            Axios.post('http://localhost:5000/likeDislike/unLike', {
                 yourLiked
             })
             setYourLiked('')
@@ -81,13 +81,13 @@ const Like_Dislike: React.FC<getProps> = ({ poId, email }) => {
             return false;
         } else {
             if(yourLiked) {
-                Axios.post('http://localhost:5000/unLike', {
+                Axios.post('http://localhost:5000/likeDislike/unLike', {
                     yourLiked
                 })
                 setYourLiked('') 
                 setReadLike(readLike-1)                 
             }
-            Axios.post('http://localhost:5000/upDislike', {
+            Axios.post('http://localhost:5000/likeDislike/upDislike', {
                 poId, email
             }).then((res) => setYourDisliked(res.data._id));
             setReadDislike(readDislike+1)
@@ -99,7 +99,7 @@ const Like_Dislike: React.FC<getProps> = ({ poId, email }) => {
             alert('로그인을 하셔야 가능합니다.');
             return false;
         } else {
-            Axios.post('http://localhost:5000/unDislike', {
+            Axios.post('http://localhost:5000/likeDislike/unDislike', {
                 yourDisliked
             })
             setYourDisliked('')

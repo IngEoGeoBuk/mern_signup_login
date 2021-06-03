@@ -43,15 +43,15 @@ const DetailPost = ({ match }: any) => {
     const [postList, setPostList] = useState<postTypes[]>([]);
 
     useEffect(() => {
-        Axios.get(`http://localhost:5000/readOne/${id}`)
+        Axios.get(`http://localhost:5000/post/readOne/${id}`)
         .then((res) => setPostList(res.data));
-        Axios.get(`http://localhost:5000/readComment/${id}`)
+        Axios.get(`http://localhost:5000/comment/readComment/${id}`)
         .then((res) => setCommentList(res.data));
     }, [])
 
     const deletePost = (id: string) => {
         if (window.confirm('글을 삭제하시겠습니까?')) {
-            Axios.delete(`http://localhost:5000/deletePost/${id}`)
+            Axios.delete(`http://localhost:5000/post/deletePost/${id}`)
             .then((res) => {
                 alert('글이 삭제 되었습니다.')
                 history.push('/');
@@ -73,7 +73,7 @@ const DetailPost = ({ match }: any) => {
             alert("댓글 내용을 입력해주세요.");
             return false;
         }
-        Axios.post('http://localhost:5000/createComment', {
+        Axios.post('http://localhost:5000/comment/createComment', {
             poId: getId, email, context: comments, time
         }).then((res: any) => {
             setCommentList([
@@ -86,7 +86,7 @@ const DetailPost = ({ match }: any) => {
 
     const deleteComment = (id: string) => {
         if (window.confirm('댓글을 삭제하시겠습니까?')) {
-            Axios.delete(`http://localhost:5000/deleteComment/${id}`)
+            Axios.delete(`http://localhost:5000/comment/deleteComment/${id}`)
             .then((res) => {
                 setCommentList(
                     commentList.filter((val) => {
@@ -104,7 +104,7 @@ const DetailPost = ({ match }: any) => {
 
     const updateTargetCommentId = `${targetComment}`;
     const updateComment = (id : string) => {
-        Axios.put(`http://localhost:5000/updateComment/${updateTargetCommentId}`, { newContext, time })
+        Axios.put(`http://localhost:5000/comment/updateComment/${updateTargetCommentId}`, { newContext, time })
         .then(() => {
             setCommentList(commentList.map((val : any) => {
                 return val._id === id ? 

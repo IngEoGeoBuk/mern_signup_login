@@ -20,10 +20,10 @@ const Best = () => {
 
     useEffect(() => {
         // // 개념글 
-        Axios.get('http://localhost:5000/readBest')
+        Axios.get('http://localhost:5000/post/readBest')
         .then((res) => res.data.forEach((poId: any) => {
             const id = poId.poId;
-            Axios.get(`http://localhost:5000/readOne/${id}`)
+            Axios.get(`http://localhost:5000/post/readOne/${id}`)
             .then((res2 : any) => {
                 setPostList((postList : any ) => [
                     ...postList,

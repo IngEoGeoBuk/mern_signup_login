@@ -11,7 +11,7 @@ const ReadDislike: React.FC<getProps> = ({ poId }) => {
 
     useEffect(() => {
         // 전체 좋아요 & 싫어요 갯수
-        Axios.get(`http://localhost:5000/ReadDislike/${poId}`)
+        Axios.get(`http://localhost:5000/likeDislike/ReadDislike/${poId}`)
         .then((res) => (
             setReadDislike(res.data.length)
         ))
