@@ -119,6 +119,11 @@ const DetailPost = ({ match }: any) => {
                 { _id: id, email: val.email, context: newContext, time: val.time, updated_time: time } 
                 : val;
             }));
+            setRepplyList(repplyList.map((val: any) => {
+                return val._id === id ?
+                    { _id: id, email: val.email, coId: val.coId, context: newContext, time: val.time, updated_time: time }
+                    : val;
+            }));
             setTargetComment('');
             setShowUpdateComment(!showUpdateComment);
         })
@@ -329,10 +334,10 @@ const DetailPost = ({ match }: any) => {
                                                         {email === val2.email ? 
                                                             <div style={{ display: 'flex' }}>
                                                                 <div
-                                                                    // onClick={() => {
-                                                                    //     setTargetComment(val._id);
-                                                                    //     setShowUpdateComment(!showUpdateComment);
-                                                                    // }}
+                                                                    onClick={() => {
+                                                                        setTargetComment(val2._id);
+                                                                        setShowUpdateComment(!showUpdateComment);
+                                                                    }}
                                                                     style={IconStyles}
                                                                 >
                                                                     <Edit />
@@ -353,6 +358,40 @@ const DetailPost = ({ match }: any) => {
                                                     <Typography>{val2.context}</Typography>
                                                     <Typography>작성시간 {val2.time}</Typography>
                                                     <Typography>수정시간: {val2.updated_time}</Typography>
+                                                    {val2._id === targetComment && showUpdateComment ?
+                                                        <div>
+                                                            <div>
+                                                                <OutlinedInput
+                                                                    type="text"
+                                                                    style={{ width: '75%' }}
+                                                                    onChange={(e) => {
+                                                                        setNewContext(e.target.value);
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            <div style={{ display: 'flex', padding: '10px' }}>
+                                                                <div
+                                                                    onClick={() => { updateComment(val2._id!) }}
+                                                                    style={IconStyles}
+                                                                >
+                                                                    <Check />
+                                                                    <Typography>수정하기</Typography>
+                                                                </div>
+                                                                <div
+                                                                    onClick={() => {
+                                                                        setTargetComment('');
+                                                                        setShowUpdateComment(!showUpdateComment);
+                                                                    }}
+                                                                    style={IconStyles}
+                                                                >
+                                                                    <Close />
+                                                                    <Typography>취소</Typography>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        : <div></div>
+                                                    }
                                                 </Paper>
                                                 :<div></div>
                                             }
