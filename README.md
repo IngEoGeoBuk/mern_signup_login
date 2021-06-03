@@ -1,4 +1,4 @@
-Simple Login + Logout + Post CRUD + Comments CRUD(~ing) + Like&Dislike(~ing) Portfolio.
+Simple Login + Logout + Post CRUD + Comments CRUD + Like&Dislike + ReadBestPost(such as Posts with at least three likse) Portfolio.
 
 U can also update password or delete Users.
 
