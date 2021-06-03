@@ -25,7 +25,7 @@ const CreatePost = ({ match }: any) => {
             return false;
         }
 
-        Axios.put('http://localhost:5000/createPost', {
+        Axios.post('http://localhost:5000/createPost', {
             email, title, contents, time
         })
         .then((res) => {
