@@ -48,6 +48,8 @@ const DetailPost = ({ match }: any) => {
         .then((res) => setPostList(res.data));
         Axios.get(`http://localhost:5000/comment/readComment/${id}`)
         .then((res) => setCommentList(res.data));
+        Axios.get(`http://localhost:5000/comment/readRepply/${id}`)
+        .then((res) => setRepplyList(res.data));
     }, [])
 
     const deletePost = (id: string) => {
@@ -94,6 +96,11 @@ const DetailPost = ({ match }: any) => {
                         return val._id != id;
                     })
                 );
+                setRepplyList(
+                    repplyList.filter((val) => {
+                        return val._id != id;
+                    })
+                );
             });
         } 
     }
@@ -121,6 +128,7 @@ const DetailPost = ({ match }: any) => {
     /// 답글 부분 ///
     const [showReplyBox, setShowReplyBox] = useState<string>('');
     const [repply, setRepply] = useState<string>('');
+    const [repplyList, setRepplyList] = useState<commentTypes[]>([]);
     const createRepply = (poId: string, coId : string) => {
         if (!repply) {
             alert("댓글 내용을 입력해주세요.");
@@ -129,10 +137,9 @@ const DetailPost = ({ match }: any) => {
         Axios.post('http://localhost:5000/comment/createRepply', {
             poId, coId, email, context: repply, time
         }).then((res: any) => {
-            console.log(res)
-            // setCommentList([
-            //     ...commentList, res.data
-            // ])
+            setRepplyList([
+                ...repplyList, res.data
+            ])
         })
         setShowReplyBox('')
         setRepply('');
@@ -207,7 +214,7 @@ const DetailPost = ({ match }: any) => {
                 {commentList.map((val: commentTypes, key: number) => {
                     return (
                         <>
-                            <Paper style={{ padding: '10px' }} elevation={2}>
+                            <Paper style={{ padding: '10px' }} elevation={5}>
                                 <h3 style={{ display: 'none' }}>{key}</h3>
                                 <div>
                                     <div style = {{ display: 'flex', justifyContent: 'space-between' }}>
@@ -274,14 +281,15 @@ const DetailPost = ({ match }: any) => {
                                     <Typography>작성시간 {val.time}</Typography>
                                     <Typography>수정시간: {val.updated_time}</Typography>
                                     <br/>
-                                    {email ? <>
+                                    {email ? 
+                                    <>
                                         { showReplyBox === val._id ? 
                                             <div style={IconStyles} onClick={() => { setShowReplyBox('') }}>
                                                 <div style={IconStyles}><Close /><Typography>답글취소</Typography></div>
                                             </div>
                                             : 
                                             <div style={IconStyles} onClick={() => { setShowReplyBox(val._id) }}>
-                                                <div style={IconStyles}><Reply /><Typography>답글달기</Typography></div>
+                                                <div style={IconStyles}><Reply /><Typography>답글</Typography></div>
                                             </div>
                                         }
                                     </>: <div></div>
@@ -310,11 +318,53 @@ const DetailPost = ({ match }: any) => {
                                 </div>
                                 : <div></div>
                             }
+                            <div style={{ padding: '15px 0px', width: '95%', paddingLeft: '5%' }}>
+                                {repplyList.map((val2: commentTypes, key: number) => {
+                                    return (
+                                        <>
+                                            {val._id === val2.coId ?
+                                                <Paper style={{ margin: '20px 0px' }} elevation={5}>
+                                                    <div style = {{ display: 'flex', justifyContent: 'space-between' }}>
+                                                        <Typography>작성자: {val2.email}</Typography>
+                                                        {email === val2.email ? 
+                                                            <div style={{ display: 'flex' }}>
+                                                                <div
+                                                                    // onClick={() => {
+                                                                    //     setTargetComment(val._id);
+                                                                    //     setShowUpdateComment(!showUpdateComment);
+                                                                    // }}
+                                                                    style={IconStyles}
+                                                                >
+                                                                    <Edit />
+                                                                    <Typography>수정</Typography>
+                                                                </div>
+                                                                &emsp;
+                                                                <div 
+                                                                    style={IconStyles}
+                                                                    onClick={() => { deleteComment(val2._id) }}
+                                                                >
+                                                                    <Delete />
+                                                                    <Typography>삭제</Typography>
+                                                                </div>
+                                                            </div> : <div></div>
+                                                        }    
+                                                    </div>                                                    
+                                                    <Typography>내용: </Typography>
+                                                    <Typography>{val2.context}</Typography>
+                                                    <Typography>작성시간 {val2.time}</Typography>
+                                                    <Typography>수정시간: {val2.updated_time}</Typography>
+                                                </Paper>
+                                                :<div></div>
+                                            }
+                                        </>
+                                    )
+                                })}
+                            </div>
+
                         </>
                     )
                 })}
             </div>
-
         </>
     )
 }

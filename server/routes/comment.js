@@ -15,7 +15,7 @@ router.post('/createComment', async (req, res) => {
 
 router.get('/readComment/:id', async (req, res) => {
     const id = req.params.id;
-    await CommentModel.find({ "poId": id }, (err, result) => {
+    await CommentModel.find({ "poId": id, "coId": null }, (err, result) => {
         if (err) {
             res.send(err);
         } else {
@@ -59,6 +59,15 @@ router.post('/createRepply', async (req, res) => {
     res.send(comment);
 });
 
-
+router.get('/readRepply/:id', async (req, res) => {
+    const id = req.params.id;
+    await CommentModel.find({ "poId": id, "coId": {$exists: true}}, (err, result) => {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    })
+})
 
 module.exports = router;
