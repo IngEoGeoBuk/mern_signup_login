@@ -18,7 +18,7 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('./models/User');
 
 /// DATABASE CONNECTION
-mongoose.connect(`mongodb://localhost:27017/uefa?readPreference=primary&appname=MongoDB%20Compass&ssl=false`, 
+mongoose.connect(`mongodb://localhost:27017/uefa?readPreference=primary&appname=MongoDB%20Compass&ssl=false`,
     { useNewUrlParser: true }
 );
 

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import { Paper, Typography } from '@material-ui/core'
 import ReactPaginate from 'react-paginate';
 import ReadLike from '../../components/ReadLike';
 import ReadDislike from '../../components/ReadDislike'
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import { ThumbUpAlt, ThumbDown } from '@material-ui/icons';
 
 import './Home.css';
 
@@ -52,11 +50,11 @@ const Best = () => {
                         </Link>
                         <div style={{ display: 'flex', padding: '0 10px' }}>
                             <div style={{ display: 'flex' }}>
-                                <ThumbUpAltIcon style={{ padding: '0 5px' }}  />
+                                <ThumbUpAlt style={{ padding: '0 5px' }}  />
                                 <ReadLike poId={val._id}/>
                             </div>
                             <div style={{ display: 'flex', padding: '0 10px' }}>
-                                <ThumbDownIcon style={{ padding: '0 5px' }} />
+                                <ThumbDown style={{ padding: '0 5px' }} />
                                 <ReadDislike poId={val._id}/>
                             </div>
                         </div>

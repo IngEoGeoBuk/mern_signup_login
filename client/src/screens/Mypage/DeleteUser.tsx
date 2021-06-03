@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useHistory  } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import { Paper } from '@material-ui/core';
+import { Paper, Typography, Button } from '@material-ui/core';
 import Axios from 'axios';
 
 const DeleteUser = () => {

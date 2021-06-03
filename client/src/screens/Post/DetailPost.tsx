@@ -3,15 +3,8 @@ import Axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link, useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/ko';
-
-import { Paper, OutlinedInput, Button } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import CloseIcon from '@material-ui/icons/Close';
-import CheckIcon from '@material-ui/icons/Check';
-
+import { Paper, OutlinedInput, Button, Typography } from '@material-ui/core';
+import { Delete, Edit, Close, Check } from '@material-ui/icons';
 import Like_DisLike from '../../components/Like_Dislike'
 
 /// 게시판 부분
@@ -137,7 +130,7 @@ const DetailPost = ({ match }: any) => {
                                     <Link to={`/updatePost/${val._id}`}
                                         style={{ display: 'flex', cursor: 'pointer', textDecoration: 'none', color: 'black' }}
                                     >
-                                        <EditIcon />
+                                        <Edit />
                                         <Typography>수정</Typography>
                                     </Link>
                                     &emsp;
@@ -145,7 +138,7 @@ const DetailPost = ({ match }: any) => {
                                         style={{ display: 'flex', cursor: 'pointer' }}
                                         onClick={() => { deletePost(val._id) }}
                                     >
-                                        <DeleteIcon />
+                                        <Delete />
                                         <Typography>삭제</Typography>
                                     </div>
                                 </div> : <div></div>
@@ -205,7 +198,7 @@ const DetailPost = ({ match }: any) => {
                                                     }}
                                                     style={IconStyles}
                                                 >
-                                                    <CheckIcon />
+                                                    <Check />
                                                     <Typography>수정</Typography>
                                                 </div>
                                                 &emsp;
@@ -213,7 +206,7 @@ const DetailPost = ({ match }: any) => {
                                                     style={IconStyles}
                                                     onClick={() => { deleteComment(val._id) }}
                                                 >
-                                                    <DeleteIcon />
+                                                    <Delete />
                                                     <Typography>삭제</Typography>
                                                 </div>
                                             </div> : <div></div>
@@ -237,7 +230,7 @@ const DetailPost = ({ match }: any) => {
                                                     onClick={() => { updateComment(val._id!) }}
                                                     style={IconStyles}
                                                 >
-                                                    <CheckIcon />
+                                                    <Check />
                                                     <Typography>수정하기</Typography>
                                                 </div>
                                                 <div
@@ -247,7 +240,7 @@ const DetailPost = ({ match }: any) => {
                                                     }}
                                                     style={IconStyles}
                                                 >
-                                                    <CloseIcon />
+                                                    <Close />
                                                     <Typography>취소</Typography>
                                                 </div>
 

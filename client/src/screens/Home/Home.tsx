@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import { Paper, Typography } from '@material-ui/core'
 import ReactPaginate from 'react-paginate';
 import ReadLike from '../../components/ReadLike';
 import ReadDislike from '../../components/ReadDislike'
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import { ThumbUpAlt, ThumbDown } from '@material-ui/icons';
 
 import './Home.css';
 
@@ -27,19 +25,6 @@ const Home = () => {
         // 게시글 불러오기
         Axios.get('http://localhost:5000/readPost')
         .then((res) => setPostList(res.data.reverse()));
-
-        // // 개념글 
-        // Axios.get('http://localhost:5000/readBest')
-        // .then((res) => res.data.forEach((poId: any) => {
-        //     const id = poId.poId;
-        //     Axios.get(`http://localhost:5000/readOne/${id}`)
-        //     .then((res2 : any) => {
-        //         setPostList((postList : any ) => [
-        //             ...postList,
-        //             { _id: res2.data[0]._id, title: res2.data[0].title, content: res2.data[0].content }
-        //         ])
-        //     })
-        // }))
     }, [])    
 
     const [pageNumber, setPageNumber] = useState(0);
@@ -59,11 +44,11 @@ const Home = () => {
                         </Link>
                         <div style={{ display: 'flex', padding: '0 10px' }}>
                             <div style={{ display: 'flex' }}>
-                                <ThumbUpAltIcon style={{ padding: '0 5px' }}  />
+                                <ThumbUpAlt style={{ padding: '0 5px' }}  />
                                 <ReadLike poId={val._id}/>
                             </div>
                             <div style={{ display: 'flex', padding: '0 10px' }}>
-                                <ThumbDownIcon style={{ padding: '0 5px' }} />
+                                <ThumbDown style={{ padding: '0 5px' }} />
                                 <ReadDislike poId={val._id}/>
                             </div>
                         </div>

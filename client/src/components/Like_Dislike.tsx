@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
-import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import { ThumbUpAltOutlined, ThumbDownAltOutlined, ThumbUpAlt, ThumbDown } from '@material-ui/icons';
 import Axios from 'axios';
 import Typography from '@material-ui/core/Typography';
 
@@ -113,21 +110,21 @@ const Like_Dislike: React.FC<getProps> = ({ poId, email }) => {
     return (
         <div style={{ justifyContent: 'center', textAlign: 'center' }}>
             {yourLiked ? 
-            <ThumbUpAltIcon 
+            <ThumbUpAlt
                 style={{padding: '10px', cursor: 'pointer'}}
                 onClick={() => unLike()}
             /> :             
-            <ThumbUpAltOutlinedIcon 
+            <ThumbUpAltOutlined
                 style={{padding: '10px', cursor: 'pointer'}}
                 onClick={() => upLike()}
             />            
             }
             {yourDisliked ?
-            <ThumbDownIcon 
+            <ThumbDown 
                 style={{padding: '10px', cursor: 'pointer'}}
                 onClick={() => unDislike()} 
             /> :
-            <ThumbDownAltOutlinedIcon 
+            <ThumbDownAltOutlined
                 style={{padding: '10px', cursor: 'pointer'}}
                 onClick={() => upDislike()} 
             /> 

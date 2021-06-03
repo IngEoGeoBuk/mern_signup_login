@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Paper } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { Paper, Typography, Button } from '@material-ui/core';
 import { Link, useHistory  } from 'react-router-dom';
 import Axios from 'axios';
 
