@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Paper, Typography, Button } from '@material-ui/core';
+import { Paper, Typography, Button, OutlinedInput } from '@material-ui/core';
 import { Link, useHistory  } from 'react-router-dom';
 import Axios from 'axios';
 
@@ -64,29 +64,38 @@ const UpdatePw = () => {
             <Typography variant="h5">비밀번호 변경</Typography>
             <br/>
             <Typography variant="subtitle1">현재 비밀번호</Typography>
-            <input 
+            <OutlinedInput
                 type="password"
                 onChange={(e) => {
                     setCurPassword(e.target.value);
                 }}
-                maxLength={20}
+                inputProps={{
+                    maxLength: 20,
+                }}
+                style={{ height: '20px' }}
             />
 
             <Typography variant="subtitle1">변경할 비밀번호</Typography>
-            <input 
+            <OutlinedInput
                 type="password"
                 onChange={(e) => {
                     setNewPassword(e.target.value);
                 }}
-                maxLength={20}
+                inputProps={{
+                    maxLength: 20,
+                }}
+                style={{ height: '20px' }}
             />
             <Typography variant="subtitle1">변경할 비밀번호 재입력</Typography>
-            <input 
+            <OutlinedInput
                 type="password"
                 onChange={(e) => {
                     setRePassword(e.target.value);
                 }}
-                maxLength={20}
+                inputProps={{
+                    maxLength: 20,
+                }}
+                style={{ height: '20px' }}
             />
             <br/><br/><br/>
             <Button 

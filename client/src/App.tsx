@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Container from '@material-ui/core/Container';
+import { Container, Button, Typography } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import Header from './components/Header';
@@ -30,11 +30,11 @@ function App() {
         <Container maxWidth="lg" style={{ padding: '0px' }}>
           <Router>
             {email ? 
-              <div style={{ float: 'right' }}>
-                {email}님 반갑습니다.
-                <button onClick={() => {}} style={{ margin: '0 10px' }}>
+              <div style={{ float: 'right', display: 'flex' }}>
+                <Typography>{email}님 반갑습니다.</Typography>
+                <Button variant="contained" onClick={() => {}} style={{ margin: '0 10px', height: '22px' }}>
                   <Link to='/mypage' style={{ color: 'black' }}>MyPage</Link>
-                </button>
+                </Button>
               </div> : 
               <div style={{ float: 'right' }}>로그인을 해주세요.</div>
             }

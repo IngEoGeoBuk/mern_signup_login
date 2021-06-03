@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Paper, Typography, Button } from '@material-ui/core';
+import { Paper, Typography, Button, OutlinedInput} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
 
@@ -79,24 +79,44 @@ const FindPw = () => {
             <Typography variant="h5">비밀번호 찾기</Typography>
             <br/>
             <Typography variant="subtitle1">Email</Typography>
-            <Typography variant="subtitle2">적은 메일로 인증메일이 전송됩니다.</Typography>
-            <input 
+            <Typography variant="subtitle1">적은 메일로 인증메일이 전송됩니다.</Typography>
+            <OutlinedInput
                 type="text"
-                onChange={(e) => {
-                setEmail(e.target.value);
+                inputProps={{
+                    maxLength: 20,
                 }}
-                maxLength={20}
+                onChange={(e) => {
+                    setEmail(e.target.value);
+                }}
+                
+                style={{ height: '20px', marginRight: '5px' }}
             />
-            <button onClick={() => sendvalue()}>이메일인증</button>
+            <Button
+                variant="contained"
+                style={{ height: '20px' }}
+                onClick={sendvalue}
+            >
+                이메일인증
+            </Button>
             <br/><br/>
             <Typography variant="subtitle1">인증번호 확인</Typography>
-            <input
+            <OutlinedInput
                 type="text"
-                onChange={(e) => {
-                setVerifyNum(e.target.value);
+                inputProps={{
+                    maxLength: 20,
                 }}
+                onChange={(e) => {
+                    setVerifyNum(e.target.value);
+                }}
+                style={{ height: '20px', marginRight: '5px' }}
             />
-            <button onClick={() => compareValue()}>인증번호확인</button>
+            <Button 
+                variant="contained" 
+                style={{ height: '20px' }}
+                onClick={compareValue}
+            >
+                인증번호확인
+            </Button>
             <br/><br/>
 
 

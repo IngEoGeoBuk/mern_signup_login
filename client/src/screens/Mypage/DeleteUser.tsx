@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useHistory  } from 'react-router-dom';
-import { Paper, Typography, Button } from '@material-ui/core';
+import { Paper, Typography, Button, OutlinedInput } from '@material-ui/core';
 import Axios from 'axios';
 
 const DeleteUser = () => {
@@ -41,20 +41,26 @@ const DeleteUser = () => {
 
 
             <Typography variant="subtitle1">회원님의 계정</Typography>
-            <input 
+            <OutlinedInput
                 type="text"
                 onChange={(e) => {
                     setDeleteEmail(e.target.value);
                 }}
-                maxLength={20}
+                inputProps={{
+                    maxLength: 20,
+                }}
+                style={{ height: '20px'}}
             />
             <Typography variant="subtitle1">회원님의 비밀번호</Typography>
-            <input 
+            <OutlinedInput
                 type="password"
                 onChange={(e) => {
                     setDeletePw(e.target.value);
                 }}
-                maxLength={20}
+                inputProps={{
+                    maxLength: 20,
+                }}
+                style={{ height: '20px' }}
             />
             <br/><br/><br/>
             <Button 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Paper, Typography, Button } from '@material-ui/core';
+import { Paper, Typography, Button, OutlinedInput } from '@material-ui/core';
 import { Link, useHistory  } from 'react-router-dom';
 import Axios from 'axios';
 
@@ -120,34 +120,60 @@ const Signup = () => {
             <br/>
             <Typography variant="subtitle1">Email</Typography>
             <Typography variant="subtitle2">적은 메일로 인증메일이 전송됩니다.</Typography>
-            {!checkRedundancyEmail ? 
-                <input
+            {!checkRedundancyEmail ?
+                <OutlinedInput
                     type="text"
+                    inputProps={{
+                        maxLength: 20,
+                    }}
                     onChange={(e) => {
                         setEmail(e.target.value);
                     }}
-                    maxLength={20}
-                /> : <div>{email}</div>
+                    style={{ height: '20px', marginRight: '5px' }}
+                />
+                : <Typography>{email}</Typography>
             }
 
             {!checkRedundancyEmail ? 
-                <button onClick={() => checkEmail()}>이메일중복체크</button> :
-                <div>중복확인완료</div>
+                <Button 
+                    variant="contained" 
+                    style={{ height: '20px' }}
+                    onClick={checkEmail}
+                >
+                    이메일중복체크
+                </Button> :
+                <Typography>중복확인완료</Typography>
             }
             <br/><br/>
             <Typography variant="subtitle1">인증번호 확인</Typography>
-            <input
+            <OutlinedInput
                 type="text"
-                onChange={(e) => {
-                setVerifyNum(e.target.value);
+                inputProps={{
+                    maxLength: 20,
                 }}
+                onChange={(e) => {
+                    setVerifyNum(e.target.value);
+                }}
+                style={{ height: '20px', marginRight: '5px' }}
             />
             {!isEmailSended? 
-                <button onClick={() => sendvalue()}>인증메일받기</button> :
+                <Button 
+                    variant="contained" 
+                    style={{ height: '20px' }}
+                    onClick={sendvalue}
+                >
+                    인증메일받기
+                </Button> : 
                 <>
                     {!isCompareValueCompleted ? 
-                        <button onClick={() => compareValue()}>인증확인</button> :
-                        <div>인증확인완료</div>
+                        <Button 
+                            variant="contained" 
+                            style={{ height: '20px' }}
+                            onClick={compareValue}
+                        >
+                            인증확인
+                        </Button> : 
+                        <Typography>인증확인완료</Typography>
                     }
                 </>
             }
@@ -155,21 +181,27 @@ const Signup = () => {
             <br/><br/>
 
             <Typography variant="subtitle1">비밀번호</Typography>
-            <input 
+            <OutlinedInput
                 type="password"
+                inputProps={{
+                    maxLength: 20,
+                }}
                 onChange={(e) => {
                     setPassword(e.target.value);
                 }}
-                maxLength={20}
+                style={{ height: '20px', marginRight: '5px' }}
             />
             <br/><br/>
             <Typography variant="subtitle1">비밀번호 재입력</Typography>
-            <input 
+            <OutlinedInput
                 type="password"
+                inputProps={{
+                    maxLength: 20,
+                }}
                 onChange={(e) => {
                     setRePassword(e.target.value);
                 }}
-                maxLength={20}
+                style={{ height: '20px', marginRight: '5px' }}
             />
             <br/><br/><br/>
             <Button 

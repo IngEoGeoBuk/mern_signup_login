@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Paper, Input, Button, Typography } from '@material-ui/core';
+import { Paper, OutlinedInput, Button, Typography } from '@material-ui/core';
 import { Link  } from 'react-router-dom';
 import Axios from 'axios';
 
@@ -37,20 +37,28 @@ const Login = () => {
             <Typography variant="h5">Login</Typography>
             <br/>
             <Typography variant="subtitle1">Email</Typography>
-            <input 
-                type="text"
-                onChange={(e) => {
-                setEmail(e.target.value);
+
+            <OutlinedInput
+                inputProps={{
+                    maxLength: 20,
                 }}
-                maxLength={20}
+                onChange={(e) => {
+                    setEmail(e.target.value);
+                }}
+                type="text"
+                style={{ height: '20px' }}
             />
+
             <Typography variant="subtitle1">Password</Typography>
-            <input 
-                type="password"
+            <OutlinedInput
+                inputProps={{
+                    maxLength: 20,
+                }}
                 onChange={(e) => {
                     setPassword(e.target.value);
                 }}
-                maxLength={20}
+                type="password"
+                style={{ height: '20px' }}
             />
             <br/><br/><br/>
             <Button variant="contained" onClick={login}>Login</Button>
