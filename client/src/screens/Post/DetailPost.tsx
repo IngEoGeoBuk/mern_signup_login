@@ -3,6 +3,7 @@ import Axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link, useHistory } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/ko';
+import ReportModal from '../../components/ReportModal'
 import { Paper, OutlinedInput, Button, Typography } from '@material-ui/core';
 import { Delete, Edit, Close, Check, Reply } from '@material-ui/icons';
 import Like_DisLike from '../../components/Like_Dislike'
@@ -176,7 +177,13 @@ const DetailPost = ({ match }: any) => {
                                         <Delete />
                                         <Typography>삭제</Typography>
                                     </div>
-                                </div> : <div></div>
+                                </div> : 
+                                <div>
+                                    {email ?
+                                        <ReportModal poId={val._id!} poEmail={val.email} logedEmail={email} />
+                                        : <div></div>
+                                    }
+                                </div>
                             }
 
                         </div>
@@ -244,7 +251,13 @@ const DetailPost = ({ match }: any) => {
                                                     <Delete />
                                                     <Typography>삭제</Typography>
                                                 </div>
-                                            </div> : <div></div>
+                                            </div> : 
+                                            <div>
+                                                {email ?
+                                                    <ReportModal coId={val._id} poEmail={val.email} logedEmail={email} />
+                                                    : <div></div>
+                                                }                                                
+                                            </div>
                                         }    
                                     </div>
                                     <Typography>내용: </Typography>
@@ -351,7 +364,13 @@ const DetailPost = ({ match }: any) => {
                                                                     <Delete />
                                                                     <Typography>삭제</Typography>
                                                                 </div>
-                                                            </div> : <div></div>
+                                                            </div> : 
+                                                            <div>
+                                                                {email ?
+                                                                    <ReportModal coId={val2._id} poEmail={val.email} logedEmail={email} />
+                                                                    : <div></div>
+                                                                }                                                                 
+                                                            </div>
                                                         }    
                                                     </div>                                                    
                                                     <Typography>내용: </Typography>
