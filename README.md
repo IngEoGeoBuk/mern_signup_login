@@ -1,4 +1,4 @@
-Simple (Signup + Login + Logout) + (Post CRUD) + (Comments, Repply CRUD) + (Like&Dislike) + ReadBestPost(such as Posts with more than three likse) Portfolio.
+Simple (Signup + Login + Logout) + (Post CRUD) + (Comments, Repply CRUD) + (Like&Dislike) + ReadBestPost(such as Posts with more than three likse) + (send report email to admin(such as abuse or ad)) Portfolio.
 
 U can also update password or delete Users.
 
