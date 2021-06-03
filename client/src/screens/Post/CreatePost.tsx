@@ -4,6 +4,8 @@ import { Paper, OutlinedInput, Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
+import * as config from '../../components/Config'
+
 
 const CreatePost = ({ match }: any) => {
     const history = useHistory();
@@ -14,6 +16,13 @@ const CreatePost = ({ match }: any) => {
     const [title, setTitle] = useState<string>("");
     const [contents, setContents] = useState<string>("");
     const [createdTime, setcreatedTime] = useState<string>("");
+    const [uploadedImgPreview, setUploadedImgPreview] = useState<string>("");
+    const [prevImg, setPrevImg] = useState<string>("");
+    const [imageSelected, setImageSelected] = useState<any>("");
+
+    const formData = new FormData()
+    formData.append("file", imageSelected)
+    formData.append("upload_preset", `${config.APPEND_KEY}`)
 
     const create = () => {
         if(!title) {
@@ -25,15 +34,32 @@ const CreatePost = ({ match }: any) => {
             return false;
         }
 
-        Axios.post('http://localhost:5000/post/createPost', {
-            email, title, contents, time
-        })
-        .then((res) => {
-            history.push('/');
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+        if(imageSelected.type.split('/')[0] !== 'image') {
+            alert('이미지만 업로드 가능합니다.')
+            return false;
+        }
+
+        if(imageSelected) {
+            Axios.post(`https://api.cloudinary.com/v1_1/${config.CLOUDINARY_KEY}/image/upload`, formData)
+            .then((res) => {
+                const image = res.data.url
+                Axios.post('http://localhost:5000/post/createPost', {
+                    email, title, contents, time, image
+                }).then((res) => {
+                    history.push('/');
+                }).catch((err) => {
+                    console.log(err);
+                })
+            })
+        } else {
+            Axios.post('http://localhost:5000/post/createPost', {
+                email, title, contents, time
+            }).then((res) => {
+                history.push('/');
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
     }
 
     /// 글 수정 부분 ///
@@ -46,6 +72,7 @@ const CreatePost = ({ match }: any) => {
                 setTitle(res.data[0].title)
                 setContents(res.data[0].contents)
                 setcreatedTime(res.data[0].time)
+                setPrevImg(res.data[0].image)
             })
         }
 
@@ -61,10 +88,26 @@ const CreatePost = ({ match }: any) => {
             return false;
         }
 
-        Axios.put(`http://localhost:5000/post/updatePost/${id}`, {
-            title, contents, time
-        })
-        window.location.replace("/");
+        if(imageSelected.type.split('/')[0] !== 'image') {
+            alert('이미지만 업로드 가능합니다.')
+            return false;
+        }
+
+        if(imageSelected) {
+            Axios.post(`https://api.cloudinary.com/v1_1/djt4l0eoz/image/upload`, formData)
+            .then((res) => {
+                const image = res.data.url
+                Axios.put(`http://localhost:5000/post/updatePost/${id}`, {
+                    title, contents, time, image
+                })
+                window.location.replace("/");
+            })
+        } else {
+            Axios.put(`http://localhost:5000/post/updatePost/${id}`, {
+                title, contents, time
+            })
+            window.location.replace("/");
+        }
     }
     /// 글 수정 부분 끝 ///
 
@@ -90,20 +133,32 @@ const CreatePost = ({ match }: any) => {
                   value={title}
               />
             <Typography>내용</Typography>
-              <OutlinedInput
-                  type="text"
-                  onChange={(e) => {
-                    setContents(e.target.value);
-                  }}
-                  value={contents}
-                  style={{ width: '75%' }}
+            <OutlinedInput
+                type="text"
+                onChange={(e) => {
+                setContents(e.target.value);
+                }}
+                value={contents}
+                style={{ width: '75%' }}
+            />
+            {uploadedImgPreview ? 
+                <img src={uploadedImgPreview} alt="" /> :
+                <img src={prevImg} alt="" />
+            }
+            <br/><br/>
+            <input 
+                type="file" 
+                accept="image/*" 
+                onChange={(e) => {
+                    setImageSelected(e.target.files![0])
+                    setUploadedImgPreview(URL.createObjectURL(e.target.files![0]))
+                }}
             />
             <br/><br/>
             {getId ? 
                 <Button variant="contained" onClick={update}>글 수정</Button> :
                 <Button variant="contained" onClick={create}>글 작성</Button>
             }
-            
         </Paper>
     )
 }

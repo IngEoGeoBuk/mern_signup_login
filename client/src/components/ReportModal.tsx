@@ -3,8 +3,7 @@ import Modal from 'react-modal';
 import emailjs from "emailjs-com";
 import { Paper, OutlinedInput, Typography } from '@material-ui/core';
 import { Cancel, Flag } from '@material-ui/icons';
-
-const { REACT_APP_EMAIL_JS_ID, REACT_APP_EMAIL_JS_KEY, REACT_APP_EMAIL_JS_KEY2 } = process.env
+import * as config from './Config'
 
 const IconStyles = {
   color: 'black', cursor: 'pointer', display: 'flex'
@@ -21,7 +20,7 @@ const EmailJS : React.FC<getProps> = ({ poId, coId, poEmail, logedEmail }) => {
   function sendEmail(e: any) {
     e.preventDefault();
 
-emailjs.sendForm(`${REACT_APP_EMAIL_JS_ID}`, `${REACT_APP_EMAIL_JS_KEY}`,  e.target, `${REACT_APP_EMAIL_JS_KEY2}`)
+emailjs.sendForm(`${config.EMAIL_JS_ID}`, `${config.EMAIL_JS_KEY}`,  e.target, `${config.EMAIL_JS_KEY2}`)
     .then((result) => {
         console.log(result.text);
     }, (error) => {

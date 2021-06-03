@@ -14,6 +14,7 @@ interface postTypes {
     email: string;
     title: string;
     contents: string;
+    image?: string; 
     time: Date;
     updated_time?: Date;
     __v? : Number;
@@ -37,7 +38,6 @@ const DetailPost = ({ match }: any) => {
     const email = window.localStorage.getItem("email")?.substr(1).slice(0, -1);
     const time = moment().format('YYYY-MM-DD:HH:mm:ss');
 
-    
     const getId = match.params.id;
     const id = `${getId}`;
     const history = useHistory();
@@ -190,6 +190,7 @@ const DetailPost = ({ match }: any) => {
                         <Typography>작성자: {val.email}</Typography>
                         <br/>
                         <Typography>글 내용: </Typography>
+                        <img src={val.image} alt="" />
                         <div>{val.contents}</div>
                         <br />
                         <Like_DisLike email={email!} poId={val._id!} />

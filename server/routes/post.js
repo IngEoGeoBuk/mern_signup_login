@@ -5,10 +5,11 @@ router.post('/createPost', async (req, res) => {
     const email = req.body.email;
     const title = req.body.title;
     const contents = req.body.contents;
+    const image = req.body.image;
     const time = req.body.time;
 
     const post = new PostModel({
-        email, title, contents, time
+        email, title, contents, image, time
     });
 
     await post.save()
@@ -40,13 +41,21 @@ router.put("/updatePost/:id", async (req, res) => {
     const id = req.params.id;
     const title = req.body.title;
     const contents = req.body.contents;
+    const image = req.body.image;
     const updated_time = req.body.time;
 
     try {
         await PostModel.findById(id, (err, updatePost) => {
-            updatePost.title = String(title);
-            updatePost.contents = String(contents);
-            updatePost.updated_time = String(updated_time);
+            if(image) {
+                updatePost.title = String(title);
+                updatePost.contents = String(contents);
+                updatePost.image = String(image);
+                updatePost.updated_time = String(updated_time);
+            } else {
+                updatePost.title = String(title);
+                updatePost.contents = String(contents);
+                updatePost.updated_time = String(updated_time);
+            }
             updatePost.save();
         })
     } catch (error) {
