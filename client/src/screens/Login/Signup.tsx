@@ -9,7 +9,9 @@ const Signup = () => {
     const [userList, setUserList] = useState<string[]>([]);
     useEffect(() => {
         Axios.get('http://localhost:5000/readUsers')
-        .then((res) => setUserList(res.data));
+        .then((res) => res.data.forEach((e : any) => {
+            setUserList(userList => [...userList, e.email])
+        }));
     }, [])
 
     const [email, setEmail] = useState<string>('');
@@ -17,14 +19,34 @@ const Signup = () => {
     const [rePassword, setRePassword] = useState<string>('');
 
     /// 이메일 인증 부분 ///
+    const [checkRedundancyEmail, setCheckRedundancyEmail] = useState<boolean>(false);
     const [isEmailSended, setIsEmailSended] = useState<boolean>(false);
     const [isCompareValueCompleted, setIsCompareValueCompleted] = useState<boolean>(false)
     const [createNum, setCreateNum] = useState<string>('')
     const [verifyNum, setVerifyNum] = useState<string>('')
 
+    const test = [1,2,3];
+
+    const checkEmail = () => {
+        if (!email) {
+            alert('이메일을 입력해주세요.');
+            return false;
+        } else {
+            if (userList.indexOf(email) === -1) {
+                alert('해당 이메일은 사용이 가능합니다.');
+                setCheckRedundancyEmail(true);
+            } else {
+                alert('중복된 이메일이 존재합니다.');
+            }
+        }
+    }
+
     const sendvalue = () => {
         if(!email) {
             alert('이메일을 입력해주세요.');
+            return false;
+        } else if (!checkRedundancyEmail) {
+            alert('이메일을 중복체크 과정을 진행해주세요.');
             return false;
         } else {
             alert('해당 이메일로 인증번호가 발송되었습니다. 인증번호 8자리를 입력해주세요.');
@@ -53,17 +75,17 @@ const Signup = () => {
     /// 이메일 인증 부분 끝 ///
     const history = useHistory();
 
+    
+
     const register = () => {
         if(!email) {
             alert('이메일을 입력해주세요.');
             return false;
-        } else {
-            userList.forEach((e : any) => {
-                if(email === e.email) {
-                    alert('중복된 이메일이 존재합니다.');
-                    return false
-                }
-            });
+        } 
+
+        if (!checkRedundancyEmail) {
+            alert('이메일을 중복체크 과정을 진행해주세요.');
+            return false;
         }
 
         if(!isEmailSended || !isCompareValueCompleted) {
@@ -100,13 +122,20 @@ const Signup = () => {
             <br/>
             <Typography variant="subtitle1">Email</Typography>
             <Typography variant="subtitle2">적은 메일로 인증메일이 전송됩니다.</Typography>
-            <input 
-                type="text"
-                onChange={(e) => {
-                setEmail(e.target.value);
-                }}
-                maxLength={20}
-            />
+            {!checkRedundancyEmail ? 
+                <input
+                    type="text"
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                    }}
+                    maxLength={20}
+                /> : <div>{email}</div>
+            }
+
+            {!checkRedundancyEmail ? 
+                <button onClick={() => checkEmail()}>이메일중복체크</button> :
+                <div>중복확인완료</div>
+            }
             <br/><br/>
             <Typography variant="subtitle1">인증번호 확인</Typography>
             <input
@@ -116,7 +145,7 @@ const Signup = () => {
                 }}
             />
             {!isEmailSended? 
-                <button onClick={() => sendvalue()}>이메일인증</button> :
+                <button onClick={() => sendvalue()}>인증메일받기</button> :
                 <>
                     {!isCompareValueCompleted ? 
                         <button onClick={() => compareValue()}>인증확인</button> :
