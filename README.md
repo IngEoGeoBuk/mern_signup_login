@@ -4,4 +4,4 @@ U can also update password or delete Users.
 
 I used React(Typescript) + MongoDB + Node.js.
 
-if you wanna use email verify mail system, plz find about nodemailer!
+if you wanna use email 1)verify mail system + 2)Image Upload cloudinary, plz find about nodemailer and cloudinary!
