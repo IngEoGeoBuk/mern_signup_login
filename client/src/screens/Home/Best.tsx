@@ -3,8 +3,6 @@ import Axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Paper, Typography } from '@material-ui/core'
 import ReactPaginate from 'react-paginate';
-import ReadLike from '../../components/ReadLike';
-import ReadDislike from '../../components/ReadDislike'
 import { ThumbUpAlt, ThumbDown } from '@material-ui/icons';
 
 import './Home.css';
@@ -13,6 +11,11 @@ interface postTypes {
     _id: string;
     title: string;
     contents: string;
+    time: Date;
+}
+
+interface getProps {
+    poId: string;
 }
 
 const Best = () => {
@@ -27,18 +30,59 @@ const Best = () => {
             .then((res2 : any) => {
                 setPostList((postList : any ) => [
                     ...postList,
-                    { _id: res2.data[0]._id, title: res2.data[0].title, content: res2.data[0].content }
+                    { _id: res2.data[0]._id, title: res2.data[0].title, content: res2.data[0].content, time: res2.data[0].time }
                 ])
             })
         }))
-        
     }, [])
+    const newPostList = postList.sort((a, b) => (a.time > b.time) ? 1 : -1)
 
     const [pageNumber, setPageNumber] = useState(0);
     const postPerPage = 5;
     const pagesVisited = pageNumber * postPerPage;
 
-    const displayPosts = postList
+
+    /// 전체에서 좋아요 싫어요 불러오기(왜인지는 몰라도 import로 불러오면 반응을 못함) ///
+    const ReadLike: React.FC<getProps> = ({ poId }) => {
+        const [readLike, setReadLike] = useState<number>(0);
+        useEffect(() => {
+            // 전체 좋아요 & 싫어요 갯수
+            Axios.get(`http://localhost:5000/likeDislike/ReadLike/${poId}`)
+                .then((res) => (
+                    setReadLike(res.data.length)
+                ))
+                .catch((error: any) => console.log('이 영상엔 좋아요 또는 싫어요가 없습니다.'))
+        }, [])
+
+        return (
+            <Typography style={{ padding: '0px 10px' }}>
+                {readLike}
+            </Typography>
+        )
+    }
+
+    const ReadDislike: React.FC<getProps> = ({ poId }) => {
+        const [ReadDislike, setReadDislike] = useState<number>(0);
+
+        useEffect(() => {
+            // 전체 좋아요 & 싫어요 갯수
+            Axios.get(`http://localhost:5000/likeDislike/ReadDislike/${poId}`)
+                .then((res) => (
+                    setReadDislike(res.data.length)
+                ))
+                .catch((error: any) => console.log('이 영상엔 좋아요 또는 싫어요가 없습니다.'))
+        }, [])
+
+        return (
+            <Typography style={{ padding: '0px 10px' }}>
+                {ReadDislike}
+            </Typography>
+
+        )
+    }
+    //////
+
+    const displayPosts = newPostList.reverse()
     .slice(pagesVisited, pagesVisited + postPerPage)
     .map((val : postTypes , key : number) => {
         return (
