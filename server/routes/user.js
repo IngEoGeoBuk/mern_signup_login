@@ -90,7 +90,7 @@ router.put('/updatePw', (req, res) => {
 
 router.delete("/deleteUser/:id", async (req, res) => {
     const id = req.params.id;
-    await UserModel.findByIdAndRemove(id).exec()
+    await UserModel.findByIdAndRemove({ "_id": id }).exec()
     res.send("user deleted");
 })
 

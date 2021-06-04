@@ -14,7 +14,7 @@ router.post('/upLike', async (req, res) => {
 
 router.delete('/unLike/:yourLiked', async (req, res) => {
     const id = req.params.yourLiked
-    await LikeModel.findOneAndDelete({ "_id": id}).exec()
+    await LikeModel.findOneAndDelete({ "_id": id }).exec()
     res.send("liked deleted.");
 });
 

@@ -65,7 +65,7 @@ router.put("/updatePost/:id", async (req, res) => {
 
 router.delete("/deletePost/:id", async (req, res) => {
     const id = req.params.id
-    await PostModel.findByIdAndRemove(id).exec()
+    await PostModel.findByIdAndRemove({ "_id": id }).exec()
     res.send("item deleted.");
 });
 

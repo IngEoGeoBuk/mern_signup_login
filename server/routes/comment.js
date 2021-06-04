@@ -42,7 +42,7 @@ router.put("/updateComment/:updateTargetCommentId", async (req, res) => {
 
 router.delete("/deleteComment/:id", async (req, res) => {
     const id = req.params.id;
-    await CommentModel.findByIdAndRemove(id).exec()
+    await CommentModel.findByIdAndRemove({ "_id": id }).exec()
     res.send("item deleted.");
 });
 

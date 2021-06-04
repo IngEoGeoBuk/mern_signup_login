@@ -28,9 +28,10 @@ const Best = () => {
                 setPostList((postList : any ) => [
                     ...postList,
                     { _id: res2.data[0]._id, title: res2.data[0].title, content: res2.data[0].content }
-                ].reverse())
+                ])
             })
         }))
+        
     }, [])
 
     const [pageNumber, setPageNumber] = useState(0);
