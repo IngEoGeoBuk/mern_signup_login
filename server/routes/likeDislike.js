@@ -12,9 +12,9 @@ router.post('/upLike', async (req, res) => {
     res.send(uplike);
 });
 
-router.post('/unLike', async (req, res) => {
-    const id = req.body.yourLiked;
-    await LikeModel.findOneAndDelete(id).exec()
+router.delete('/unLike/:yourLiked', async (req, res) => {
+    const id = req.params.yourLiked
+    await LikeModel.findOneAndDelete({ "_id": id}).exec()
     res.send("liked deleted.");
 });
 
@@ -52,9 +52,9 @@ router.post('/upDislike', async (req, res) => {
     res.send(updislike);
 });
 
-router.post('/unDislike', async (req, res) => {
-    const id = req.body.yourDisliked;
-    await DislikeModel.findOneAndDelete(id).exec()
+router.delete('/unDislike/:yourDisliked', async (req, res) => {
+    const id = req.params.yourDisliked
+    await DislikeModel.findOneAndDelete({ "_id": id }).exec()
     res.send("disliked deleted.");
 });
 
