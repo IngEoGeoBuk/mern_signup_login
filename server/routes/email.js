@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
+const config = require('../config');
 
 // async..await is not allowed in global scope, must use a wrapper
 router.post('/sendEmail', (req, res) => {
@@ -10,19 +11,19 @@ router.post('/sendEmail', (req, res) => {
     async function main() {
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
-            service: 'Naver',
+            service: config.EMAIL_SERVICE,
             host: "smtp.naver.com",
             port: 587,
             secure: false, // true for 465, false for other ports
             auth: {
-                user: 'burning19@naver.com', // generated ethereal user
-                pass: 'put your password', // generated ethereal password
+                user: config.EMAIL_ID, // generated ethereal user
+                pass: config.EMAIL_PW, // generated ethereal password
             },
         });
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-            from: '"Nodemailer contact" <burning19@naver.com>', // sender address
+            from: `"Nodemailer contact" <${config.EMAIL_ID}>`, // sender address
             to: `${email}`, // list of receivers
             subject: '회원가입 인증 번호입니다.', // Subject line
             text: "회원가입 인증번호를 입력해주세요", // plain text body

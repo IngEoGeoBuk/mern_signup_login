@@ -5,10 +5,11 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
-import * as config from './Config'
+
+const config = require('./config');
 
 /// DATABASE CONNECTION
-mongoose.connect(`mongodb://localhost:27017/uefa?readPreference=primary&appname=MongoDB%20Compass&ssl=false`,
+mongoose.connect(config.MONGODB_URL,
     { useNewUrlParser: true }
 );
 
@@ -60,5 +61,3 @@ app.use("/likeDislike", likeDislikeRoute);
 app.listen(5000, () => {
     console.log("yey, server is running on port 5000");
 })
-
-require('dotenv').config();
