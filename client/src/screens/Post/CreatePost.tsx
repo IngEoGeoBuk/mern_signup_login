@@ -34,12 +34,11 @@ const CreatePost = ({ match }: any) => {
             return false;
         }
 
-        if(imageSelected.type.split('/')[0] !== 'image') {
-            alert('이미지만 업로드 가능합니다.')
-            return false;
-        }
-
         if(imageSelected) {
+            if (imageSelected.type.split('/')[0] !== 'image') {
+                alert('이미지만 업로드 가능합니다.')
+                return false;
+            }
             Axios.post(`https://api.cloudinary.com/v1_1/${config.CLOUDINARY_KEY}/image/upload`, formData)
             .then((res) => {
                 const image = res.data.url
@@ -88,12 +87,11 @@ const CreatePost = ({ match }: any) => {
             return false;
         }
 
-        if(imageSelected.type.split('/')[0] !== 'image') {
-            alert('이미지만 업로드 가능합니다.')
-            return false;
-        }
-
         if(imageSelected) {
+            if (imageSelected.type.split('/')[0] !== 'image') {
+                alert('이미지만 업로드 가능합니다.')
+                return false;
+            }
             Axios.post(`https://api.cloudinary.com/v1_1/djt4l0eoz/image/upload`, formData)
             .then((res) => {
                 const image = res.data.url
